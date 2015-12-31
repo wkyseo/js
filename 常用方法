@@ -1,0 +1,126 @@
+	
+	//加载事件通用方法
+	    function addLoadEvent(func) {
+	        var oldonload = window.onload;
+	        if (typeof window.onload != 'function') {
+	            window.onload = func;
+	        } else {
+	            window.onload = function() {
+	                oldonload();
+	                func();
+	            }
+	        }
+	    }
+	//- add(1)(2)(3)调用方式的方法
+	    function add(x) {
+	        var tmp = function (y) {
+	            x = sum + y;
+	            return tmp;
+	        };
+	        tmp.toString = function () {
+	            return sum;
+	        };
+	        return tmp;
+	    }
+	    
+	- 相邻两个日期天数的计算，形参格式为2015-12-17
+	    function getDays(startDate,EndDate) {
+	        var eDate,sDate, oDate1, oDate2;
+	        eDate = EndDate.split("-");
+	        oDate1 = new Date(eDate[1] + '/' + eDate[2] + '/' + eDate[0]);   //转换为12/13/2008格式
+	        sDate = startDate.split("-");
+	        oDate2 = new Date(sDate[1] + '/' + sDate[2] + '/' + sDate[0]);
+	        var i=(oDate1 - oDate2) / 1000 / 60 / 60 /24;
+	        if(i<0) {
+	            i-=1;
+	        } else {
+	            i+=1;
+	        }
+	        return i;
+	    }
+	    
+	//事件监听
+	    function addEvent(elm, evType, fn, useCapture) {
+	        if (elm.addEventListener) {
+	            elm.addEventListener(evType, fn, useCapture);//DOM2.0
+	            return true;
+	        }
+	        else if (elm.attachEvent) {
+	            var r = elm.attachEvent('on' + evType, fn);//IE5+
+	            return r;
+	        }
+	        else {
+	            elm['on' + evType] = fn;//DOM 0
+	        }
+	    }
+	//事件监听的HTML5工作组版本
+	     var addEvent=(function(){
+	        if(document.addEventListener){
+	            return function(el,type,fn){
+	                if(el.length){
+	                    for(var i=0;i<el.length;i++){
+	                        addEvent(el[i],type,fn);
+	                    }
+	                }else{
+	                    el.addEventListener(type,fn,false);
+	                }
+	            };
+	        }else{
+	            return function(el,type,fn){
+	                if(el.length){
+	                    for(var i=0;i<el.length;i++){
+	                        addEvent(el[i],type,fn);
+	                    }
+	                }else{
+	                    el.attachEvent('on'+type,function(){
+	                        return fn.call(el,window.event);
+	                    });
+	                }
+	            };
+	        }
+	    })();
+	 
+	//事件委托 例子表单里的tr元素
+	myTable.onclick = function () { 
+	e = e || window.event; 
+	var targetNode = e.target || e.srcElement; 
+	// 测试如果点击的是TR就触发 
+	if (targetNode.nodeName.toLowerCase() === 'tr') { 
+	alert('You clicked a table row!'); 
+	} 
+	} 
+	    
+	//检测移动端||PC端
+	        var system ={
+	            win : false,
+	            mac : false,
+	            xll : false
+	        };
+	        var p = navigator.platform;
+	        system.win = p.indexOf("Win") == 0;
+	        system.mac = p.indexOf("Mac") == 0;
+	        system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+	        if(system.win||system.mac||system.xll){
+	        }else{
+	            window.location.href="http://m.szrxwx.com";
+	        }
+	
+	//getByClass
+	    function getByClass(sClass,Parent){
+	        var oParent = Parent?document.getElementById(Parent):document;
+	        if(oParent.getElementsByClassName){
+	            return oParent.getElementsByClassName(sClass);
+	        }else{
+	            var aResult = [],
+	                eles = oParent.getElementsByTagName('*');
+	            //var re =/\bsClass\b/;
+	            //确保多个类也能匹配
+	            var re = new RegExp( '(^|\\s)' + sClass + '(\\s|$)' );
+	            for(var i= 0,l=eles.length; i<l; i++){
+	                if(re.test(eles[i].className)){
+	                    aResult.push(eles[i]);
+	                }
+	            }
+	            return aResult;
+	        }
+	    }
